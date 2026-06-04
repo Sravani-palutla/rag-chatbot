@@ -1,0 +1,16 @@
+"""
+python -m venv .venv -> for creating virtual environment
+.venv\Scripts\activate -> for activating virtual environment
+
+pip install streamlit -> for streamlit
+
+
+Liteparse:
+installation: npm i -g @llamaindex/liteparse
+
+pip install -U langchain-text-splitters
+
+pip install google-genai
+
+pip install python-dotenv
+"""

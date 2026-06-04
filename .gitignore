@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+.env
+chroma_db/
+chroma_db_bge/
+extracted_images/
+data.txt
+output.txt
+eng.traineddata
