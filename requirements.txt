@@ -1,16 +1,32 @@
-"""
-python -m venv .venv -> for creating virtual environment
-.venv\Scripts\activate -> for activating virtual environment
+python -m venv .venv
+.venv\Scripts\activate
 
-pip install streamlit -> for streamlit
+pip install streamlit
 
-
-Liteparse:
-installation: npm i -g @llamaindex/liteparse
+npm i -g @llamaindex/liteparse
 
 pip install -U langchain-text-splitters
 
 pip install google-genai
 
 pip install python-dotenv
-"""
+
+pip install fastapi
+
+pip install uvicorn
+
+pip install python-multipart
+
+pip install sqlalchemy
+
+pip install psycopg2-binary
+
+pip install passlib[bcrypt]
+
+pip install python-jose
+
+npm create vite@latest frontend -- --template react
+
+npm install
+
+npm install axios react-router-dom

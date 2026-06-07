@@ -2,10 +2,9 @@ import fitz
 import os
 
 
-def extract_text_and_images(uploaded_file, image_folder="extracted_images"):
+def extract_text_and_images(pdf_bytes, image_folder="extracted_images"):
     os.makedirs(image_folder, exist_ok=True)
 
-    pdf_bytes = uploaded_file.read()
     doc = fitz.open(stream=pdf_bytes, filetype="pdf")
 
     full_text = ""

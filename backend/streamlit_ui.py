@@ -1,8 +1,8 @@
 import streamlit as st
-from chunking import create_chunks
-from vector_store import store_chunks, search_chunks
-from llm import generate_answer
-from pdf_parser import extract_text_and_images
+from backend.chunking import create_chunks
+from backend.vector_store import store_chunks, search_chunks
+from backend.llm import generate_answer
+from backend.pdf_parser import extract_text_and_images
 
 st.title("RAG Chatbot")
 
