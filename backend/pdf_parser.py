@@ -1,5 +1,6 @@
 import fitz
 import os
+from llm import describe_image
 
 
 def extract_text_and_images(pdf_bytes, image_folder="extracted_images"):
@@ -9,6 +10,7 @@ def extract_text_and_images(pdf_bytes, image_folder="extracted_images"):
 
     full_text = ""
     image_paths = []
+    image_descriptions = []
 
     for page_number, page in enumerate(doc, start=1):
         text = page.get_text()
@@ -33,4 +35,14 @@ def extract_text_and_images(pdf_bytes, image_folder="extracted_images"):
 
             image_paths.append(image_path)
 
-    return full_text, image_paths
+            try:
+                description = describe_image(image_path)
+            except Exception:
+                description = (
+                    "Image was extracted from the document, "
+                    "but image description could not be generated due to API limits."
+                )
+
+            image_descriptions.append(description)
+
+    return full_text, image_paths, image_descriptions

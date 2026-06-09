@@ -15,6 +15,7 @@ from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
+from file_parser import parse_txt, parse_docx, parse_image
 
 app = FastAPI()
 
@@ -118,8 +119,8 @@ def login(
         raise HTTPException(status_code=401, detail="Invalid username or password")
 
     access_token = create_access_token(
-    data={"sub": user.username}
-)
+        data={"sub": user.username}
+    )
 
     return {
         "message": "Login successful",
@@ -137,8 +138,32 @@ async def upload_file(
 ):
     user = current_user
 
-    pdf_bytes = await file.read()
-    extracted_text, image_paths = extract_text_and_images(pdf_bytes)
+    file_bytes = await file.read()
+    file_name = file.filename.lower()
+
+    if file_name.endswith(".pdf"):
+        extracted_text, image_paths, image_descriptions = extract_text_and_images(file_bytes)
+
+    elif file_name.endswith(".txt"):
+        extracted_text, image_paths, image_descriptions = parse_txt(file_bytes)
+
+    elif file_name.endswith(".docx"):
+        extracted_text, image_paths, image_descriptions = parse_docx(file_bytes)
+
+    elif file_name.endswith((".png", ".jpg", ".jpeg")):
+        extracted_text, image_paths, image_descriptions = parse_image(file_bytes, file.filename)
+
+    else:
+        raise HTTPException(status_code=400, detail="Unsupported file type")
+
+    for index, description in enumerate(image_descriptions, start=1):
+        extracted_text += f"""
+
+    [IMAGE DESCRIPTION {index}]
+    This is an image, diagram, chart, or visual from the document.
+    Description:
+    {description}
+    """
 
     chunks = create_chunks(extracted_text)
 
@@ -180,7 +205,7 @@ def chat(
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    results = search_chunks(user.username, query, file_name, top_k=3)
+    results = search_chunks(user.username, query, file_name, top_k=8)
 
     answer = generate_answer(query, results)
 
